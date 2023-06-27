@@ -1,0 +1,7 @@
+
+model_p82/config.json
+model_p82/pytorch_model.bin
+model_p82/special_tokens_map.json
+model_p82/tokenizer.json
+model_p82/tokenizer_config.json
+model_p82/vocab.txt
