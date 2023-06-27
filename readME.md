@@ -6,7 +6,6 @@ json
 numpy
 pandas
 matplotlib
-csv
 
 langdetect
 simpletransformers
