@@ -50,14 +50,6 @@ def download_comments(DEVELOPER_KEY, video_id, order="relevance", max_lenght_out
         #combine data from all pages
         data_lst += page_list
         
-        #Cache comments
-        with open("cache_download.json", 'w') as f:
-            # indent=2 is not needed but makes the file human-readable 
-            # if the data is nested
-            json.dump(data_lst, f, indent=2) 
-
-        
-        
         #get next page and repeat
         next_page_token = page.get('nextPageToken')
         is_first_page = False
