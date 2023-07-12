@@ -7,9 +7,6 @@
 ## Methodik 2 (Sind TS-Kommentare schnulziger als nicht-TS-Kommentare)
 - Evaluation des Modells
 
-
-## Methodik 2
-
 # Einleitung
 Alle Vorgänge lassen sich von den beiden Jupyter-Notebooks steuern. Installieren Sie also Jupyter-Notebook oder eine ähnliche Software zuerst. Öffenen Sie dann "YT-Comment-Classificator" und "YT-Download_Comments". Sie werden außerdem einige Python Packages brauchen.
 
