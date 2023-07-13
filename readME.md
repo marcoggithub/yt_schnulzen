@@ -1,6 +1,6 @@
 # To-Do
 ## Methodik 1 (TS-Comments als Ausdruck schnulziger Euphorie über die Videosequenz)
-- Grafiken und zugehörige Kommentare abspeichern
+- ~~Grafiken und zugehörige Kommentare abspeichern~~
 - Analyse: Ist das Video dort besonders schnulzig, wo viele TS-Kommentare sind?
 - Alle TS-Kommentare Annotieren!
 
