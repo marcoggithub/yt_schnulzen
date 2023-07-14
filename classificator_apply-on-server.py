@@ -45,7 +45,7 @@ def predict_comments(filename, modelname, len_output):
         output_iteration.append(prediction_values)
         output.append(output_iteration)
 
-        if i == len_output:
+        if i > len_output:
             return output
 
     return output
