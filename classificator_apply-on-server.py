@@ -39,6 +39,9 @@ def predict_comments(filename, modelname):
         output_iteration.append(prediction_values)
         output.append(output_iteration)
 
+        if i == len(apply_lst):
+            return output
+
     return output
 
 if __name__ == '__main__':
