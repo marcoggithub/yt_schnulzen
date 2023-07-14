@@ -51,7 +51,7 @@ def predict_comments(filename, modelname, len_output):
     return output
 
 if __name__ == '__main__':
-    length_output = input("please specify length (0 = all)")
+    length_output = int(input("please specify length (0 = all)"))
     output = predict_comments("comment_downloads/data_clean_all.tsv", "model_p82", length_output)
 
     tidy_output = []
