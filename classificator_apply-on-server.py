@@ -15,17 +15,18 @@ import logging
 #transformers_logger.setLevel(logging.INFO)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def predict_comments(filename, modelname, len):
+def predict_comments(filename, modelname, len_output):
     #input has to be list
     apply_df = pd.read_csv(filename, sep="\t")
     apply_lst = apply_df['comment'].tolist()
     print("the whole list consists of {} elements".format(len(apply_lst)))  
 
     #specifies output length
-    if len == 0:
+    if len_output == 0:
+        len_output = len(apply_lst)
         apply_lst = apply_lst
     else:
-        apply_lst = apply_lst[:len]
+        apply_lst = apply_lst[:len_output]
     print("the application list consists of {} elements".format(len(apply_lst)))
     
     # specify model used
@@ -44,7 +45,7 @@ def predict_comments(filename, modelname, len):
         output_iteration.append(prediction_values)
         output.append(output_iteration)
 
-        if i == len(apply_lst):
+        if i == len_output:
             return output
 
     return output
