@@ -38,6 +38,7 @@ def predict_comments(filename, modelname, len_output):
     for i, comment in enumerate(apply_lst):
         output_iteration = []
         input = [comment]
+        i = i + 1
         print(i)
         predictions, prediction_values = model.predict(input)
         output_iteration.append(comment)
