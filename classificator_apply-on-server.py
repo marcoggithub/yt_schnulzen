@@ -15,6 +15,16 @@ import logging
 #transformers_logger.setLevel(logging.INFO)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+def tidy_and_save (list):
+    tidy_output = []
+    for comments, prediction, raw_outputs in list:
+        #softmax to get probablities from raw_outputs
+        tidy_output.append([comments, prediction[0], softmax(raw_outputs, axis=1)[0][1]])
+    
+    df = pd.DataFrame(tidy_output, columns=["comments", "prediction", "probability_class_one"])
+    return df
+
+
 def predict_comments(filename, modelname, len_output):
     #input has to be list
     apply_df = pd.read_csv(filename, sep="\t")
@@ -45,6 +55,11 @@ def predict_comments(filename, modelname, len_output):
         output_iteration.append(predictions)
         output_iteration.append(prediction_values)
         output.append(output_iteration)
+        print(len_output)
+
+        if i % 5000 == 0:
+            df = tidy_and_save(output)
+            df.to_csv("classification_all.tsv", sep="\t")
 
         if i > len_output:
             return output
@@ -54,11 +69,5 @@ def predict_comments(filename, modelname, len_output):
 if __name__ == '__main__':
     length_output = int(input("please specify length (0 = all)"))
     output = predict_comments("comment_downloads/data_clean_all.tsv", "model_p82", length_output)
-
-    tidy_output = []
-    for comments, prediction, raw_outputs in output:
-        #softmax to get probablities from raw_outputs
-        tidy_output.append([comments, prediction[0], softmax(raw_outputs, axis=1)[0][1]])
-    
-    df = pd.DataFrame(tidy_output, columns=["comments", "prediction", "probability_class_one"])
+    df = tidy_and_save(output)
     df.to_csv("classification_all.tsv", sep="\t")
