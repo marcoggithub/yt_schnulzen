@@ -15,23 +15,29 @@ import logging
 #transformers_logger.setLevel(logging.INFO)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def tidy_and_save (list):
+def tidy_and_save (apply_lst, predictions, raw_outputs):
+    x = list(zip(apply_lst, predictions, raw_outputs))
+    print(x)
+    print(10*"-")
+
     tidy_output = []
-    for comments, prediction, raw_outputs in list:
+    for comments, prediction, raw_outputs in x:
         #softmax to get probablities from raw_outputs
-        tidy_output.append([comments, prediction[0], softmax(raw_outputs, axis=1)[0][1]])
+        raw_outputs = raw_outputs.reshape(1,2)
+        raw_outputs = softmax(raw_outputs, axis=1)
+
+        tidy_output.append([comments, prediction, raw_outputs[0][1]])
     
     df = pd.DataFrame(tidy_output, columns=["comments", "prediction", "probability_class_one"])
     return df
-
 
 def predict_comments(filename, modelname, len_output):
     #input has to be list
     apply_df = pd.read_csv(filename, sep="\t")
     apply_lst = apply_df['comment'].tolist()
-    print("the whole list consists of {} elements".format(len(apply_lst)))  
-
+    
     #specifies output length
+    print("the whole list consists of {} elements".format(len(apply_lst)))  
     if len_output == 0:
         len_output = len(apply_lst)
         apply_lst = apply_lst
@@ -42,32 +48,15 @@ def predict_comments(filename, modelname, len_output):
     # specify model used
     model = ClassificationModel('distilbert', modelname, use_cuda=False)
     print("the model {} is loaded".format(modelname))
+    
+    # apply model
+    predictions, prediction_values = model.predict(apply_lst)    
 
-    #main loop
-    output = []
-    for i, comment in enumerate(apply_lst):
-        output_iteration = []
-        input = [comment]
-        i = i + 1
-        print(i)
-        predictions, prediction_values = model.predict(input)
-        output_iteration.append(comment)
-        output_iteration.append(predictions)
-        output_iteration.append(prediction_values)
-        output.append(output_iteration)
-        print(len_output)
+    return apply_lst, predictions, prediction_values
 
-        if i % 5000 == 0:
-            df = tidy_and_save(output)
-            df.to_csv("classification_all-{}.tsv".format(i), sep="\t")
-
-        if i > len_output:
-            return output
-
-    return output
 
 if __name__ == '__main__':
     length_output = int(input("please specify length (0 = all)"))
-    output = predict_comments("comment_downloads/data_clean_all.tsv", "model_p82", length_output)
-    df = tidy_and_save(output)
-    df.to_csv("classification_all.tsv", sep="\t")
+    apply_lst, predictions, raw_outputs = predict_comments("comment_downloads/data_clean_all.tsv", "model_p82", length_output)
+    df = tidy_and_save(apply_lst, predictions, raw_outputs)
+    df.to_csv("classification_all_onego.tsv", sep="\t")

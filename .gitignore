@@ -8,3 +8,4 @@ model_p82/vocab.txt
 outputs/
 runs/
 cache_dir
+classification_all_test2.tsv
