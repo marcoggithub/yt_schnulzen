@@ -2,7 +2,6 @@ import pandas as pd
 import pickle
 from langdetect import detect
 import time
-import PySimpleGUI as sg
 import swifter
 
 def ident_lang(x):
