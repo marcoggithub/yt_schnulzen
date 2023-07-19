@@ -3,9 +3,9 @@ from os.path import isfile, join
 import csv
 import pandas as pd
 
-def files_in_dir(path: str):
+def files_in_dir(path: str) -> list:
     onlyfiles = ["{}{}".format(path, f) for f in listdir(path) if isfile(join(path, f))]
-    print(onlyfiles)
+    return onlyfiles
 
 def save_to_cache(df):
     #immediately saving downloads to cache
