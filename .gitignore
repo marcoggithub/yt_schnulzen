@@ -9,3 +9,7 @@ outputs/
 runs/
 cache_dir
 classification_all_test2.tsv
+/data
+/old
+/my_packages_old
+
