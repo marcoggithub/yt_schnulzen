@@ -1,28 +1,26 @@
 import pandas as pd
 import pickle
-from langdetect import detect
+from langdetect import detect, LangDetectException
 import time
 import swifter
+
 
 def ident_lang(x):
     global index
     global length
     try:
         language = detect(x)
-    except:
+    except LangDetectException:
         language = "NA"
-    
-    #show progress
-    index += 1
-    if index % 1000 == 0:
-        print("{} von {}".format(index, length))
 
-    #return language detected
+    # show progress
+
+    # return language detected
     return language
 
 
-
 df_comments = pd.read_pickle("processed_data.pkl")
+df_comments.reset_index(drop=True)
 
 ## to show progress
 index = 0
