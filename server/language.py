@@ -10,7 +10,7 @@ def ident_lang(x):
     global length
     try:
         language = detect(x)
-    except LangDetectException:
+    except LangDetectException as e:
         language = "NA"
 
     # show progress
@@ -20,7 +20,7 @@ def ident_lang(x):
 
 
 df_comments = pd.read_pickle("processed_data.pkl")
-df_comments.reset_index(drop=True)
+df_comments = df_comments.reset_index(drop=True)
 
 ## to show progress
 index = 0
