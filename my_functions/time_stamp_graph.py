@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 
-def plot_time_stamp(df, origin_name : str, max_min : str = "5:00", save : bool = True, show_data : bool = False):
+def plot_time_stamp(df, origin_name : str, max_min : str = "5:00", save : bool = True, show_data : bool = False, show_data_not_rounded : bool = False):
+    print(10 * "*")
+    print(origin_name)
+
     df = df[df["origin"] == origin_name]
     df = df[df["time_stamps"] != "NA"]
     ts_list = list(df["time_stamps"])
@@ -17,35 +20,31 @@ def plot_time_stamp(df, origin_name : str, max_min : str = "5:00", save : bool =
     ts_set.sort()
 
     ## create list of all posible values:
-    max_time = max_min.split(":")
-    max_minute = int(max_time[0])
-    max_second = int(max_time[1])
-    range_minute = max_minute
-    range_second = int(max_second/10)
-    if range_second == 0:
-        range_minute -= 1
-        range_second = 5
-        full_minute = True
-
-    all_values = []
-    for min in range(int(range_minute+1)):
-        for sec in range(range_second+1):
-            sec = str(sec) + "0" 
-            value = ":".join([str(min), str(sec)])
-            all_values.append(value)
-    if full_minute == True:
-        full_minute_str = ":".join([str(range_minute+1), "00"])
-        all_values.append(full_minute_str)
-
+    all_values = lst_all_values(max_min)
+    
     #count
     plot_dict = {}
     for ts in all_values:
+        plot_dict[ts] = 1
         count = ts_list_rounded.count(ts)
         plot_dict[ts] = count
     
     #show data
     if show_data == True:
         print(*plot_dict.items(), sep="\n")
+    if show_data_not_rounded == True:
+
+        plot_dic_not_rounded = dict()
+        
+        for ts in ts_list:
+            if ts in plot_dic_not_rounded.keys():
+                plot_dic_not_rounded[ts] += 1
+            else:
+                plot_dic_not_rounded[ts] = 1
+        
+        sorted_plot_dic_not_rounded = dict(sorted(plot_dic_not_rounded.items(), key=lambda item: item[1]))
+        print(*sorted_plot_dic_not_rounded.items(), sep="\n")
+
 
     # create x and y data
     myList = plot_dict.items()
@@ -67,7 +66,6 @@ def plot_time_stamp(df, origin_name : str, max_min : str = "5:00", save : bool =
         print(f"plot is saved unter figures/figures/{origin_name}-{sum(plot_dict.values())}.png")
     plt.show()
 
-    return plot_dict
 
 def round_stamps_10(ts_list) -> list:
     out_lst = []
@@ -95,3 +93,33 @@ def round_stamps_10(ts_list) -> list:
             pass
 
     return out_lst
+
+
+def lst_all_values(max_min : str) -> list:
+    all_values = []
+
+    max_time = max_min.split(":")
+    max_minute = int(max_time[0])
+    max_second = int(max_time[1])
+
+    range_minute = max_minute
+    range_second = int(max_second/10)
+
+    for min in range(int(range_minute)):
+        for sec in range(6):
+            sec = str(sec) + "0" 
+            value = ":".join([str(min), str(sec)])
+            all_values.append(value)
+    
+    # append last minute
+    if range_second != 0:
+        for sec in range(range_second+1):
+            sec = str(sec) + "0"
+            value = ":".join([str(range_minute), str(sec)])
+            all_values.append(value)
+    else:
+        value = ":".join([str(range_minute), "00"])
+        all_values.append(value)
+
+    return all_values
+

@@ -11,7 +11,7 @@ def save_to_cache(df):
     #immediately saving downloads to cache
     name = df["origin"][0]
     length = df.shape[0]
-    filename = "data/download_cache/{}-{}.pkl".format(name, length)
+    filename = "data/1-download_cache/{}-{}.pkl".format(name, length)
     df.to_pickle(filename)
 
 
