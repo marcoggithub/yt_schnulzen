@@ -1,15 +1,7 @@
 
-model_p82/config.json
-model_p82/pytorch_model.bin
-model_p82/special_tokens_map.json
-model_p82/tokenizer.json
-model_p82/tokenizer_config.json
-model_p82/vocab.txt
-outputs/
-runs/
-cache_dir
-classification_all_test2.tsv
+/BERT-Classification/model_p82
+/BERT-Classification/cache_dir
+/BERT-Classification/outputs
+/BERT-Classification/runs
 /data
-/old
-/my_packages_old
 /server/project_venv
