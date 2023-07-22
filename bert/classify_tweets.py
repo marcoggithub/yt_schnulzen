@@ -10,37 +10,30 @@ import pandas as pd
 from sys import argv
 from sys import stderr
 import os
+import numpy as np
 
-from classification_functions import split_data, train_model, eval_model
+from classification_functions import train_model
 
 """
-requirements:
-pip install simpletransformers
-pip install scipy
-pip install torch
+#requirements:
+#pip install simpletransformers
+#pip install scipy
+#pip install torch
 
 """
 
 if __name__ == "__main__":
     # Split Annotation Dataset
-    dataset = pd.read_csv("annotation_data/annotate_1000_final.tsv", sep="\t")
+    dataset = pd.read_csv("/home/bukold/projects/yt_schnulzen/bert/annotation_data/annotate_1000_final.tsv", sep="\t")
     dataset.rename(columns={"comment": "text", "category": "labels"}, inplace=True)
     dataset = dataset[["text", "labels"]]
     dataset = dataset[dataset["labels"] != -1]
     print(dataset["labels"].value_counts())
 
-    train_df, eval_df = split_data(dataset, "text", categories_columnname="labels")
 
-    match input("train, eval or apply?"):
-        case "train":
-            train_model(dataset, modelname="final_model")
-            #eval_model(eval_df.tail(94), modelname="my_model")
 
-        case "eval":
-            eval_model(eval_df, "my_model")
 
-        # case "apply":
-        #    break
+    train_model(input_df = dataset, train_percent = 0.8, validate_percent = 0.1, modelname="eval_model_V1")
 
 
 """

@@ -29,4 +29,4 @@ length = df_comments.shape[0]
 
 df_comments["lang"] = df_comments["comment"].swifter.apply(lambda x: ident_lang(x))
 
-df_comments.to_pickle("data/processed/{}.pkl".format("server_langdetect"))
+df_comments.to_pickle("{}.pkl".format("server_langdetect"))
