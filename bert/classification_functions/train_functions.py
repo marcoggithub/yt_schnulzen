@@ -57,43 +57,31 @@ def train_model(train_df, evaluation_df=None, modelname="my_model"):
 
     # Optional model configuration
     model_args = ClassificationArgs(
-        num_train_epochs=6,
+        num_train_epochs=3,
         train_batch_size=32,
-        evaluate_during_training=False,
-        evaluate_during_training_verbose=False,
-        evaluate_during_training_steps=100,
         overwrite_output_dir=True,
         use_multiprocessing=False,
         use_multiprocessing_for_evaluation=False,
     )
-    """
-    self.args = {
-       'model_type':  'roberta',
-       'model_name': 'roberta-base',
-       'output_dir': 'outputs/',
-       'cache_dir': 'cache/',   
-       'fp16': True,
-       'fp16_opt_level': 'O1',
-       'max_seq_length': 128,
-       'train_batch_size': 8,
-       'eval_batch_size': 8,
-       'gradient_accumulation_steps': 1,
-       'num_train_epochs': 1,
-       'weight_decay': 0,
-       'learning_rate': 4e-5,
-       'adam_epsilon': 1e-8,
-       'warmup_ratio': 0.06,
-       'warmup_steps': 0,
-       'max_grad_norm': 1.0,   
-       'logging_steps': 50,
-       'evaluate_during_training': False,
-       'save_steps': 2000,
-       'eval_all_checkpoints': True,
-       'use_tensorboard': True,   
-       'overwrite_output_dir': False,
-       'reprocess_input_data': False,
-    }
-    """
+
+    '''
+    With this configuration, the training will terminate if the mcc score
+    of the model on the test data does not improve upon the best mcc score
+    by at least 0.01 for 5 consecutive evaluations. 
+    An evaluation will occur once for every 1000 training steps.
+    
+    '''
+
+    # model_args.use_early_stopping = True
+    # model_args.early_stopping_delta = 0.01
+    # model_args.early_stopping_metric = "mcc"
+    # model_args.early_stopping_metric_minimize = False
+    # model_args.early_stopping_patience = 5
+    # model_args.evaluate_during_training_steps = 10
+    # model_args.evaluate_during_training=True
+    # model_args.evaluate_during_training_verbose=True
+    # model_args.eval_batch_size = 8
+    
 
     model = ClassificationModel(
         "distilbert",
@@ -105,7 +93,7 @@ def train_model(train_df, evaluation_df=None, modelname="my_model"):
     # --> set cuda to True, if available
 
     # start training#
-    model.train_model(train_df)
+    model.train_model(train_df, eval_df=evaluation_df)
 
     # save model
     model.model.save_pretrained(modelname)

@@ -1,3 +1,5 @@
+# using my script to classify tweets to classify youtube comments:
+
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 
 # https://pypi.org/project/simpletransformers/ <- source evaluation tipps
@@ -31,8 +33,8 @@ if __name__ == "__main__":
 
     match input("train, eval or apply?"):
         case "train":
-            train_model(train_df, modelname="my_model")
-            eval_model(eval_df, modelname="my_model")
+            train_model(dataset, modelname="final_model")
+            #eval_model(eval_df.tail(94), modelname="my_model")
 
         case "eval":
             eval_model(eval_df, "my_model")

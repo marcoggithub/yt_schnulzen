@@ -1,7 +1,10 @@
 
-/BERT-Classification/model_p82
-/BERT-Classification/cache_dir
-/BERT-Classification/outputs
-/BERT-Classification/runs
+/bert/model_p82
+/bert/cache_dir
+/bert/outputs
+/bert/runs
+/bert/final_model
+/bert/my_model
+
 /data
 /server/project_venv

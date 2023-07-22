@@ -18,7 +18,7 @@ import logging
 #logging.basicConfig(level=logging.INFO)
 #transformers_logger = logging.getLogger("transformers")
 #transformers_logger.setLevel(logging.INFO)
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+#os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 ### APPLY EXISTING MODEL ###
 def tidy_prediction_output (apply_lst, predictions, raw_outputs):

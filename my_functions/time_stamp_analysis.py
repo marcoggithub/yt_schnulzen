@@ -1,10 +1,12 @@
 import re
 
 def extract_ts(comment : str, max_video_min : int = 10) -> list:
-    ts = re.findall(rf"[0-{max_video_min}]:\d\d", comment)
+    ts = re.findall(rf"\d?\d:\d\d", comment)
     
     if ts != []:
         if check_if_true_ts(comment) == True:
+            print(ts)
+
             return ts
         else: 
             return "NA"
