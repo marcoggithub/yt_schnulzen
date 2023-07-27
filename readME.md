@@ -10,8 +10,18 @@ $ docker build -t my_schnulzen_image .
 ```
 $ docker run -p 8888:8888 -v {path}:/home/jovyan my_schnulzen_image
 ```
-6. Use the Skript by inserting URL into Webbrowser
+6. Use the Skript by inserting URL into Webbrowser - I recommend the URL using http://127.0.0.1:8888. Your Terminal should show something like this:
+```
+To access the server, open this file in a browser:
+    file:///home/jovyan/.local/share/jupyter/runtime/jpserver-7-open.html
+Or copy and paste one of these URLs:
+    http://bea402ca72f5:8888/lab?token=dfb6c11db730a040fd85a7c2c250666ce93e2cd63b7f7fa0
+    http://127.0.0.1:8888/lab?token=dfb6c11db730a040fd85a7c2c250666ce93e2cd63b7f7fa0
+```
+7. Now you are ready to use the main.ipynb script or train an model with the scripts under "/bert"
 
+Best of Luck,
+Q.
 
 Notes:
 - You can use $pwd to find the current path
