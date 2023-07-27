@@ -1,4 +1,4 @@
-## Benutzung
+## Usage:
 1. Download Git-Repository (via Zip-File or Git Clone)
 2. Install Docker (https://docs.docker.com/engine/install/)
 3. Open Terminal in Working Directory yt_schnulzen
