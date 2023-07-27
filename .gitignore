@@ -5,6 +5,7 @@
 /bert/runs
 /bert/final_model
 /bert/my_model
+models/
 
 /data
 /server/project_venv

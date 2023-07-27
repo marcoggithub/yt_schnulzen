@@ -66,7 +66,6 @@ def plot_time_stamp(df, origin_name : str, max_min : str = "5:00", save : bool =
         print(f"plot is saved unter figures/figures/{origin_name}-{sum(plot_dict.values())}.png")
     plt.show()
 
-
 def round_stamps_10(ts_list) -> list:
     out_lst = []
 

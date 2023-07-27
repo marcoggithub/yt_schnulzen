@@ -23,8 +23,18 @@ pip install torch
 
 if __name__ == "__main__":
     # Split Annotation Dataset
-    dataset = pd.read_csv("annotation_data/annotate_1000_final.tsv", sep="\t")
-    dataset.rename(columns={"comment": "text", "category": "labels"}, inplace=True)
+    dataset1 = pd.read_csv("annotation_data/annotate_1000_final.tsv", sep="\t")
+    dataset1.rename(columns={"comment": "text", "category": "labels"}, inplace=True)
+    dataset1 = dataset1[["comment", "labels"]]
+    
+    dataset2 = pd.read_csv("bert/annotation_data/annotate_1242_mg&qb.csv", sep=";")
+    dataset2.rename(columns={"comments": "text", "human_prediction": "labels"}, inplace=True)
+    dataset2 = dataset2[["comment", "labels"]]
+    
+    
+    
+    dataset = pd.merge(dataset1, dataset2)
+
     dataset = dataset[["text", "labels"]]
     dataset = dataset[dataset["labels"] != -1]
     print(dataset["labels"].value_counts())
