@@ -17,3 +17,4 @@ models/
 /.npm
 /.local
 /.vscode
+/bert/.*

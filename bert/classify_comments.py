@@ -11,19 +11,14 @@ from sys import argv
 from sys import stderr
 import os
 
-from classification_functions import split_data, train_model, eval_model
-
-
-if __name__ == "__main__":
-    # Split Annotation Dataset
-    dataset1 = pd.read_csv("annotation_data/annotate_1000_final.tsv", sep="\t")
+def new_model():
+    # Load and split Annotation Datasets
+    dataset1 = pd.read_csv("bert/annotation_data/annotate_1000_final.tsv", sep="\t")
     dataset1.rename(columns={"comment": "text", "category": "labels"}, inplace=True)
     dataset1 = dataset1[["comment", "labels"]]
-    
     dataset2 = pd.read_csv("bert/annotation_data/annotate_1242_mg&qb.csv", sep=";")
     dataset2.rename(columns={"comments": "text", "human_prediction": "labels"}, inplace=True)
     dataset2 = dataset2[["comment", "labels"]]
-    
     dataset = pd.merge(dataset1, dataset2)
 
     dataset = dataset[["text", "labels"]]
@@ -32,13 +27,9 @@ if __name__ == "__main__":
 
     train_df, eval_df = split_data(dataset, "text", categories_columnname="labels")
 
-    match input("train, eval or apply?"):
-        case "train":
-            train_model(dataset, modelname="final_model")
-            #eval_model(eval_df.tail(94), modelname="my_model")
+    train_model(dataset, modelname="final_model")
+    #eval_model(eval_df, modelname="final_model")
 
-        case "eval":
-            eval_model(eval_df, "my_model")
 
 """
 calc weights of class
