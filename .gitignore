@@ -9,3 +9,9 @@ models/
 
 /data
 /server/project_venv
+/.jupyter
+/.cache
+/.local
+/.ipython
+/.ipynb_checkpoints
+/.npm
