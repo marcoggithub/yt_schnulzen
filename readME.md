@@ -20,7 +20,7 @@ Or copy and paste one of these URLs:
 ```
 7. Now you are ready to use the main.ipynb script or train an model with the scripts under "/bert"
 
-Best of Luck,
+Best of Luck,\
 Q.
 
 Notes:
