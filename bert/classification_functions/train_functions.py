@@ -17,6 +17,8 @@ from sys import argv
 from sys import stderr
 import os
 import logging
+import numpy as np
+
 
 # logging.basicConfig(level=logging.INFO)
 # transformers_logger = logging.getLogger("transformers")
@@ -46,9 +48,23 @@ def split_data(annotations, text_columnname: str, categories_columnname: str):
 
     return train_df, eval_df
 
+def train_validate_test_split(df, train_percent=.6, validate_percent=.2, seed=None):
+    df = df.reset_index(drop=True)
+
+    np.random.seed(seed)
+    perm = np.random.permutation(df.index)
+    m = len(df.index)
+    train_end = int(train_percent * m)
+    validate_end = int(validate_percent * m) + train_end
+    train = df.iloc[perm[:train_end]]
+    validate = df.iloc[perm[train_end:validate_end]]
+    test = df.iloc[perm[validate_end:]]
+    return train, validate, test
+
+
 
 ## create and save model
-def train_model(train_df, evaluation_df=None, modelname="my_model"):
+def train_model(input_df, train_percent : float, validate_percent : float , modelname : str ="my_model"):
     # toggle logging
     # from transformers.utils import logging
     # logging.set_verbosity_info()
@@ -57,7 +73,7 @@ def train_model(train_df, evaluation_df=None, modelname="my_model"):
 
     # Optional model configuration
     model_args = ClassificationArgs(
-        num_train_epochs=3,
+        num_train_epochs=12,
         train_batch_size=32,
         overwrite_output_dir=True,
         use_multiprocessing=False,
@@ -68,19 +84,24 @@ def train_model(train_df, evaluation_df=None, modelname="my_model"):
     With this configuration, the training will terminate if the mcc score
     of the model on the test data does not improve upon the best mcc score
     by at least 0.01 for 5 consecutive evaluations. 
-    An evaluation will occur once for every 1000 training steps.
+    An evaluation will occur once for every X training steps.
     
     '''
+    train_df, validate_df, test_df = train_validate_test_split(input_df, train_percent, validate_percent, seed=None)
 
-    # model_args.use_early_stopping = True
-    # model_args.early_stopping_delta = 0.01
-    # model_args.early_stopping_metric = "mcc"
-    # model_args.early_stopping_metric_minimize = False
-    # model_args.early_stopping_patience = 5
-    # model_args.evaluate_during_training_steps = 10
-    # model_args.evaluate_during_training=True
-    # model_args.evaluate_during_training_verbose=True
-    # model_args.eval_batch_size = 8
+    print(train_df.shape[0])
+    print(validate_df.shape[0])
+    print(test_df.shape[0])
+
+    model_args.use_early_stopping = True
+    model_args.early_stopping_delta = 0.01
+    model_args.early_stopping_metric = "mcc"
+    model_args.early_stopping_metric_minimize = False
+    model_args.early_stopping_patience = 5
+    model_args.evaluate_during_training_steps = 10
+    model_args.evaluate_during_training=True
+    model_args.evaluate_during_training_verbose=True
+    model_args.eval_batch_size = 10
     
 
     model = ClassificationModel(
@@ -92,27 +113,29 @@ def train_model(train_df, evaluation_df=None, modelname="my_model"):
     )
     # --> set cuda to True, if available
 
-    # start training#
-    model.train_model(train_df, eval_df=evaluation_df)
+    # start training
+    model.train_model(train_df, eval_df=validate_df)
 
     # save model
-    model.model.save_pretrained(modelname)
-    model.tokenizer.save_pretrained(modelname)
-    model.config.save_pretrained(f"{modelname}/")
+    model.model.save_pretrained(f"models/{modelname}")
+    model.tokenizer.save_pretrained(f"models/{modelname}")
+    model.config.save_pretrained(f"models/{modelname}/")
+
+    #test model
+    test_model(test_df, modelname)
 
 
-### evaluate model
-# evaluate model
-def eval_model(eval_df, modelname):
+
+def test_model(test_df, modelname):
     # reload model (if needed)
     model_args = ClassificationArgs(use_multiprocessing_for_evaluation=False)
     model = ClassificationModel(
-        "distilbert", modelname, use_cuda=False, args=model_args
+        "distilbert", model_name=f"models/{modelname}", use_cuda=False, args=model_args
     )
 
     # start evaluation
     print("Starting Evaluation:")
-    result, model_outputs, wrong_predictions = model.eval_model(eval_df)
+    result, model_outputs, wrong_predictions = model.eval_model(test_df)
 
     # print results
     print("Results:")
