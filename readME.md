@@ -1,39 +1,17 @@
-# To-Do
-## Methodik 1 (TS-Comments als Ausdruck schnulziger Euphorie über die Videosequenz)
-- ~~Grafiken und zugehörige Kommentare abspeichern~~
-- Analyse: Ist das Video dort besonders schnulzig, wo viele TS-Kommentare sind?
-- Alle TS-Kommentare Annotieren!
-
-## Methodik 2 (Sind TS-Kommentare schnulziger als nicht-TS-Kommentare)
-- Evaluation des Modells
-
-# Einleitung
-Alle Vorgänge lassen sich von den beiden Jupyter-Notebooks steuern. Installieren Sie also Jupyter-Notebook oder eine ähnliche Software zuerst. Öffenen Sie dann "YT-Comment-Classificator" und "YT-Download_Comments". Sie werden außerdem einige Python Packages brauchen.
-
-# Benötigte Packages
-re
-json
-numpy
-pandas
-matplotlib
-
-langdetect
-simpletransformers
-sys
-os
-=> Es werden außerdem die von uns eigens programmierten Funktionen im "my_packages"-Ordner importiert
-
-# YT-Download_Comments
-Dieses Notebook ermöglicht dem User beliebig viele Kommentare eines YT-Videos herunterzuladen. Er wird diese als .csv Datei speichern können und nach Kommentaren einer beliebigen Sprache filtern können. Außerdem können alle Emojies gelöscht werden. 
-Außerdem im Notebook ist ein Funktion um sog. time-stamp-comments zu analysieren. Also Kommentare, die im Format "00:00" einen Zeitpunkt im Video referenzieren. Diese time-stamps lassen sich dann grafisch darstellen.
-
-# YT-Comment-Classificator
-Dieses Notebook ermöglich Training, Evaluation und Anwendung eines binären maschine-learning Klassifikators, basierend auf BERT. Es lässt sich eine Annotationstabelle an Kommentaren zusammenstellen, ein Modell trainieren und abspeichern, testen und auf eine neue Liste an Kommentaren anwenden.
+## Benutzung
+1. Download Git-Repository (via Zip-File or Git Clone)
+2. Install Docker (https://docs.docker.com/engine/install/)
+3. Open Terminal in Working Directory yt_schnulzen
+4. Create the Docker Image, by executing:
+```
+$ docker build -t my_schnulzen_image .
+```
+5. Create and run Docker Container, by inserting the current path (e.g. "/Users/bukold/Desktop/yt_schnulzen")
+```
+$ docker run -p 8888:8888 -v {path}:/home/jovyan my_schnulzen_image
+```
+6. Use the Skript by inserting URL into Webbrowser
 
 
-download comments to dataframe via command "**my_video.get_comments(dev_key, number of comments, order)**"
-
-- dev_key = Developer Key given by YouTube for the 
-- my_video = video_class name from last cell
-- len_output = approx number of comments
-- order can be set to "relevance" or "time"
+Notes:
+- You can use $pwd to find the current path
